@@ -7,6 +7,15 @@ from server import app
 def load_users():
     """Load users from u.user into database."""
 
+    users_file = open("./seed_data/u.user")
+
+    for line in users_file:
+        line = line.strip().split("|")
+        a_user = User(user_id = line[0], age = line[1], zipcode = line[4])
+        db.session.add(a_user)
+
+    db.session.commit()
+
 
 def load_movies():
     """Load movies from u.item into database."""
@@ -20,5 +29,5 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     load_users()
-    load_movies()
-    load_ratings()
+    # load_movies()
+    # load_ratings()
