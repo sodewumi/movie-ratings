@@ -2,7 +2,7 @@
 
 from model import User, Rating, Movie, connect_to_db, db
 from server import app
-
+from datetime import datetime, strptime
 
 def load_users():
     """Load users from u.user into database."""
@@ -19,6 +19,14 @@ def load_users():
 
 def load_movies():
     """Load movies from u.item into database."""
+
+    movies_file = open('/seed_data/u.item')
+
+    for line in movies_file:
+        line = line.strip.split("|")
+        date = " ".join(line[2].split("-"))
+        date = datetime.strptime(date, '%b, %d, %Y')
+        # a_movie = Movie(movie_id=line[0], movie_title=line[1][:-7], released_at=line[])
 
 
 def load_ratings():
