@@ -24,12 +24,14 @@ def load_movies():
 
     for line in movies_file:
         line = line.strip().split("|")
+
         if line[2] == "":
             date = None
         else:
             date = datetime.datetime.strptime(line[2], '%d-%b-%Y')
+
         a_movie = Movie(
-            movie_id=line[0], movie_title=line[1][:-7],
+            movie_title=line[1][:-7],
             released_at=date, imdb_url=line[4])
         db.session.add(a_movie)
 
@@ -39,10 +41,19 @@ def load_movies():
 def load_ratings():
     """Load ratings from u.data into database."""
 
+    ratings_file = open("./seed_data/u.data")
+
+    for line in ratings_file:
+        line = line.strip().split()
+        a_rating = Rating(user_id = line[0], movie_id = line[1], score = line[2])
+        db.session.add(a_rating)
+
+    db.session.commit()
+
 
 if __name__ == "__main__":
     connect_to_db(app)
 
     load_users()
-    # load_movies()
-    # load_ratings()
+    load_movies()
+    load_ratings()
