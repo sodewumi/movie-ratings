@@ -3,10 +3,16 @@
 
 <h1>User Information</h1>
  <p>
-    User's Age: {{ a_user.age }}
-    User's Zipcode: {{ a_user.zipcode }}
+    User's Age: {{ a_user.age }}<br>
+    User's Zipcode: {{ a_user.zipcode }}<br>
 
+    <ul>
+        {% for rated_item in a_user.ratings %}
+        
+        <li>{{ rated_item.movie.movie_title }}: {{ rated_item.score }}</li>
 
+        {% endfor %}
+    </ul>
  </p>
 
 
