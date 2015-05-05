@@ -27,7 +27,7 @@ class User(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed"""
 
-        return "<User user_id = %s email = %s" % (self.user_id, self.email)
+        return "<User user_id = %s email = %s>" % (self.user_id, self.email)
 
 class Movie(db.Model):
     """Movie of ratings website"""
@@ -42,7 +42,7 @@ class Movie(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed"""
 
-        return "<Movie movie_id = %s movie_title = %s" % (self.movie_id, self.movie_title)
+        return "<Movie movie_id = %s movie_title = %s>" % (self.movie_id, self.movie_title)
 
 class Rating(db.Model):
     """Ratings from rating website"""
@@ -63,7 +63,7 @@ class Rating(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed"""
 
-        return "<Rating rating_id = %s score = %s user_id = %s" % (self.rating_id, self.score, self.user_id)
+        return "<Rating rating_id = %s score = %s user_id = %s>" % (self.rating_id, self.score, self.user_id)
 
 ##############################################################################
 # Helper functions

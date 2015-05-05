@@ -31,6 +31,29 @@ def user_list():
     users = User.query.all()
     return render_template("user_list.html", users=users)
 
+@app.route("/login", methods = ["POST", "GET"])
+def login_form():
+    """Show login form as a separate page"""
+
+    if request.method == "POST":
+        username = request.form["username_input"]
+        password = request.form["password_input"]
+        session["login"] = session.setdefault("login", [username, password])
+        flash("You logged in successfully")
+        print "logged in", session
+        return redirect("/")
+
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout_button():
+    """Remove login information from session"""
+
+    session.pop("login")
+    flash("You've successfully logged out. Goodbye.")
+    print "logged out", session
+    return redirect("/")
+
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
