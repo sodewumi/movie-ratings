@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<!-- This is quick to write. However it sends sends multiple sql queries everytime
+it loops over a user, which is slower to render -->
 <h1>User Information</h1>
  <p>
     User's Age: {{ a_user.age }}<br>
@@ -8,7 +10,7 @@
 
     <ul>
         {% for rated_item in a_user.ratings %}
-        
+
         <li>{{ rated_item.movie.movie_title }}: {{ rated_item.score }}</li>
 
         {% endfor %}
