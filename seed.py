@@ -31,7 +31,7 @@ def load_movies():
             date = datetime.datetime.strptime(line[2], '%d-%b-%Y')
 
         a_movie = Movie(
-            movie_title=line[1][:-7],
+            movie_title=line[1][:-7].decode("latin-1"),
             released_at=date, imdb_url=line[4])
         db.session.add(a_movie)
 
