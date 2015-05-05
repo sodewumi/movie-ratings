@@ -31,6 +31,25 @@ def user_list():
     users = User.query.all()
     return render_template("user_list.html", users=users)
 
+@app.route("/user_input/<int:id>")
+def display_user(id):
+    """Displays information about the user."""
+
+
+    a_user = User.query.get(id)
+
+    # user_age = a_user.age
+    # user_zipcode = a_user.zipcode
+    # user_rating_list = a_user.ratings # returns list of rating objects (contains movie id and score)
+    # movie_id_list = a_user.ratings.Movie.movie_id
+    # print user_rating_list, "*************************"
+    # print movie_id_list
+
+    return render_template("user_info.html", a_user = a_user)
+
+
+
+
 @app.route("/login", methods = ["POST", "GET"])
 def login_form():
     """Show login form as a separate page"""
@@ -38,7 +57,7 @@ def login_form():
     if request.method == "POST":
         username = request.form["username_input"]
         password = request.form["password_input"]
-        session["login"] = session.setdefault("login", [username, password])
+        session["login"] = session.setdefault("login", [username])
         flash("You logged in successfully")
         print "logged in", session
         return redirect("/")
