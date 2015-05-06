@@ -7,17 +7,15 @@ it loops over a user, which is slower to render -->
  <p>
     User's Age: {{ a_user.age }}<br>
     User's Zipcode: {{ a_user.zipcode }}<br>
+</p>
 
-    <ul>
-        {% for rated_item in a_user.ratings %}
+<ul>
+    {% for rated_item in a_user.ratings %}
 
-        <li>{{ rated_item.movie.movie_title }}: {{ rated_item.score }}</li>
+    <li>{{ rated_item.movie.movie_title }}: {{ rated_item.score }}</li>
 
-        {% endfor %}
-    </ul>
- </p>
-
-
+    {% endfor %}
+</ul>
 
 
 {% endblock %}

@@ -47,7 +47,15 @@ def movie_list():
 
     # movies = Movie.query.order_by(Movie.movie_title).all()
     return render_template("movie_list.html", movies=movies)
-    
+
+@app.route("/movie/<int:id>")
+def display_movie(id):
+    """Displays information about the movie"""
+
+    user_rating = db.session.query(Rating.score, Rating.user_id).filter_by(movie_id = id).all()
+    movie_title = db.session.query(Movie.movie_title).filter_by(movie_id = id).one()
+    movie_title = str(movie_title[0])
+    return render_template("movie_info.html", user_rating = user_rating, movie_title=movie_title)
 
 
 

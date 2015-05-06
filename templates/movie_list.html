@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Movies</h2>
+<ul>
+    {% for movie in movies %}
+        <li>
+            <a href="/movie/{{ movie[0] }}">
+                {{ movie[1] }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
+
+
+<!-- WHO WHAT WHEN WHERE AND WHY????? -->
+<!-- <li>
+    <a href="/movie/{{ movie.movie_id }}">
+        {{ movie.movie_title }}
+    </a>
+</li> -->
