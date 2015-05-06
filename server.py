@@ -39,6 +39,17 @@ def display_user(id):
 
     return render_template("user_info.html", a_user = a_user)
 
+@app.route("/movies")
+def movie_list():
+    """Show a list of movies"""
+
+    movies = db.session.query(Movie.movie_id, Movie.movie_title).order_by(Movie.movie_title).all()
+
+    # movies = Movie.query.order_by(Movie.movie_title).all()
+    return render_template("movie_list.html", movies=movies)
+    
+
+
 
 @app.route("/login", methods = ["POST", "GET"])
 def login_form():
@@ -51,7 +62,7 @@ def login_form():
         
         if user_object:
             if user_object.password == password:
-                session["login"] = session.setdefault("login", [username])
+                session["login"] = username
                 flash("You logged in successfully")
                 return redirect("/")
             else:
