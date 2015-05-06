@@ -47,10 +47,19 @@ def login_form():
     if request.method == "POST":
         username = request.form["username_input"]
         password = request.form["password_input"]
-        session["login"] = session.setdefault("login", [username])
-        flash("You logged in successfully")
-        print "logged in", session
-        return redirect("/")
+        user_object = User.query.filter(User.email == username).first()
+        
+        if user_object:
+            if user_object.password == password:
+                session["login"] = session.setdefault("login", [username])
+                flash("You logged in successfully")
+                return redirect("/")
+            else:
+                flash("Incorrect password. Try again.")
+                return redirect("/login")
+        else:
+            flash("We do not have this email on file. Click Register if you would like to create an account.")
+            return redirect("/login")
 
     return render_template("login.html")
 
@@ -68,7 +77,22 @@ def register_user():
     """Collect registration data from user"""
 
     if request.method == "POST":
-        pass
+
+        email = request.form["email"]
+        password = request.form["password"]
+        age = request.form["age"]
+        zipcode = request.form["zipcode"]
+
+        if User.query.filter(User.email == email).first():
+            flash("It looks like you've already registered with that email. Try again.")
+            return redirect("/register")
+        else:
+            new_user = User(email = email, password = password,
+                            age = age, zipcode = zipcode)
+            db.session.add(new_user)
+            db.session.commit()
+            flash("Thanks for creating an account with the Judgemental Eye!")
+            return redirect("/")
 
     return render_template("registration_form.html")
 
