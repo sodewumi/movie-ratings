@@ -2,6 +2,7 @@
 {% block content %}
 
 <h2>Movies</h2>
+
 <ul>
     {% for movie in movies %}
         <li>
@@ -15,7 +16,8 @@
 {% endblock %}
 
 
-<!-- WHO WHAT WHEN WHERE AND WHY????? -->
+<!-- this code still works even though we're accessing attributes of the object through the tuple,
+because sqlalchemy gives tuples special properities -->
 <!-- <li>
     <a href="/movie/{{ movie.movie_id }}">
         {{ movie.movie_title }}

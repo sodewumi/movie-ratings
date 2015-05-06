@@ -7,6 +7,14 @@ it loops over a user, which is slower to render -->
 
 <h3>{{ movie_title }}</h3>
 
+<form action="/movie/{{ movie_id }}" method="POST">
+    <label>What would you rate this movie?
+        <input type="number" name="score">
+    </label>
+
+    <input type="submit">
+</form>
+
 <ul>
 {% for rating in user_rating %}
     <li>User Id: {{ rating[1] }}, Score: {{ rating[0] }}</li> 
