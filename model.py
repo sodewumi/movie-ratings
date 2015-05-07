@@ -50,7 +50,21 @@ class User(db.Model):
         else:
             return 0.0
         
+    def predict_rating(self, movie):
+        other_rating = movie.ratings
 
+        similarities = [(self.similarity(r.user), r) for r in other_rating]
+        similarities.sort(reverse = True)
+
+        similarities = [(sim, r) for sim, r in similarities if sim > 0]
+
+        if similarities == []:
+            return None
+
+        else:
+            numerator = sum([sim * r.score for sim, r in similarities])
+            denominator = sum([sim for sim, r in similarities])
+            return numerator/denominator
 
 
 class Movie(db.Model):
