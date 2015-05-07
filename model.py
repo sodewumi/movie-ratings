@@ -1,6 +1,7 @@
 """Models and database functions for Ratings project."""
 
 from flask_sqlalchemy import SQLAlchemy
+import correlation
 
 # This is the connection to the SQLite database; we're getting this through
 # the Flask-SQLAlchemy helper library. On this, we can find the `session`
@@ -28,6 +29,29 @@ class User(db.Model):
         """Provide helpful representation when printed"""
 
         return "<User user_id = %s email = %s>" % (self.user_id, self.email)
+
+    def similarity(self, other_rating):
+        this_user_rating_dict = {}
+        paired_list = []
+
+        this_user_rating_obj = self.ratings
+
+        for r in this_user_rating_obj:
+            this_user_rating_dict[r.movie_id] = r.score
+
+
+        for r in other_rating.ratings:
+            movie_id = r.movie_id
+            if this_user_rating_dict.get(movie_id):
+                paired_list.append((r.score, this_user_rating_dict[movie_id]))
+
+        if paired_list:
+            return correlation.pearson(paired_list)
+        else:
+            return 0.0
+        
+
+
 
 class Movie(db.Model):
     """Movie of ratings website"""
