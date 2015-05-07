@@ -7,6 +7,16 @@ it loops over a user, which is slower to render -->
 
 <h3>{{ movie_title }}</h3>
 
+{% if score %}
+    {% if score < 6 %}
+        <p>You've rated this movie as a {{ score }}</p>
+    {% else %}
+        <p>You're not currently logged in.</p>
+    {% endif %}
+{% else %}
+    <p>You've not yet rated this movie.</p>
+{% endif %}
+
 
 <form action="/movie/{{ movie_id }}" method="POST">
     <label>What would you rate this movie?

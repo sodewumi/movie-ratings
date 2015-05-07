@@ -58,6 +58,23 @@ def display_movie(id):
     movie_title = db.session.query(Movie.movie_title).filter_by(movie_id = id).one()
     movie_title = str(movie_title[0])
 
+    logged_in_user = db.session.query(User).filter(User.email == session.get("login", 0)).first()
+    print session
+    print logged_in_user
+
+    if logged_in_user:
+        movie_rating = db.session.query(Rating).filter(
+                        Rating.movie_id == id,
+                        Rating.user_id == logged_in_user.user_id).first()
+        if movie_rating:
+            score = movie_rating.score
+        else:
+            score = None
+    else:
+        score = 6
+        print "yo***************"  
+
+
     if request.method == "POST":
         user_score = request.form["score"]
         new_user_id = db.session.query(User.user_id).filter_by(email = session["login"]).one()
@@ -77,7 +94,7 @@ def display_movie(id):
 
 
     return render_template("movie_info.html", user_rating = user_rating, 
-                            movie_title=movie_title, movie_id = id)
+                            movie_title=movie_title, movie_id = id, score = score)
 
 
 
