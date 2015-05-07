@@ -61,11 +61,19 @@ def display_movie(id):
     if request.method == "POST":
         user_score = request.form["score"]
         new_user_id = db.session.query(User.user_id).filter_by(email = session["login"]).one()
-        new_rating = Rating(movie_id=id, user_id = new_user_id[0], score = user_score)
-        db.session.add(new_rating)
-        db.session.commit()
-        flash("Thank you for rating this movie.")
-        return redirect("/movie/"+str(id))
+
+        find_rating_obj = Rating.query.filter(Rating.user_id == new_user_id[0], Rating.movie_id == id).first()
+        if find_rating_obj:
+            find_rating_obj.score = user_score
+            db.session.commit()
+            flash("Thank you for updating your preference")
+            return redirect("/movie/"+str(id))
+        else:
+            new_rating = Rating(movie_id=id, user_id = new_user_id[0], score = user_score)
+            db.session.add(new_rating)
+            db.session.commit()
+            flash("Thank you for rating this movie.")
+            return redirect("/movie/"+str(id))
 
 
     return render_template("movie_info.html", user_rating = user_rating, 
