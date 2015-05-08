@@ -57,6 +57,7 @@ def display_movie(id):
     user_rating = db.session.query(Rating.score, Rating.user_id).filter_by(movie_id = id).all()
     movie_title = db.session.query(Movie.movie_title).filter_by(movie_id = id).one()
     movie_title = str(movie_title[0])
+    movie_obj = db.session.query(Movie).filter(Movie.movie_id == id).one()
 
     average = float(sum([r for r,y in user_rating])) / len(user_rating)
 
@@ -71,18 +72,20 @@ def display_movie(id):
             score = movie_rating.score
             prediction = None
         else:
-            movie_obj = db.session.query(Movie).filter(Movie.movie_id == id).one()
+
             prediction = logged_in_user.predict_rating(movie_obj)
             score = None
     else:
         score = 6
 
 
+
     if request.method == "POST":
         user_score = request.form["score"]
         new_user_id = db.session.query(User.user_id).filter_by(email = session["login"]).one()
 
-        find_rating_obj = Rating.query.filter(Rating.user_id == new_user_id[0], Rating.movie_id == id).first()
+        find_rating_obj = Rating.query.filter(Rating.user_id == new_user_id[0],
+                                            Rating.movie_id == id).first()
         if find_rating_obj:
             find_rating_obj.score = user_score
             db.session.commit()
@@ -99,9 +102,38 @@ def display_movie(id):
     return render_template("movie_info.html", user_rating = user_rating, 
                             movie_title=movie_title, movie_id = id,
                             score = score, prediction = prediction,
-                            average = average)
+                            average = average, difference = berate(movie_obj, score))
 
+def berate(movie_arg, scored):
+    the_eye = User.query.filter_by(email = "the-eye@of-judgment.com").one()
+    eye_rating = Rating.query.filter_by( user_id = the_eye.user_id, 
+                                        movie_id = movie_arg.movie_id).first()
+    if eye_rating is None:
+        eye_rating = the_eye.predict_rating(movie_arg)
+    else:
+        eye_rating = eye_rating.score
 
+    if eye_rating and scored < 6 and scored != None:
+        difference = abs(eye_rating - scored)
+    else:
+        difference = None
+
+    BERATEMENT_MESSAGES = [
+        "I suppose you don't have such bad taste after all.",
+        "I regret every decision that I've ever made that has brought me" +
+            " to listen to your opinion.",
+        "Words fail me, as your taste in movies has clearly failed you.",
+        "That movie is great. For a clown to watch. Idiot.",
+        "Words cannot express the awfulness of your taste."
+    ]
+
+    if difference is not None:
+        beratement = BERATEMENT_MESSAGES[int(difference)]
+
+    else:
+        beratement = None
+    print beratement 
+    return beratement
 
 @app.route("/login", methods = ["POST", "GET"])
 def login_form():

@@ -9,6 +9,13 @@ it loops over a user, which is slower to render -->
 
 <p>The average rating for this movie is {{ average }}.</p>
 
+{% if difference %}
+    <p>The all seeing eye says: {{ difference }}</p>
+{% else %}
+    <p>You have to rate a movie for the eye to judge you.</p>
+{% endif %}
+
+
 {% if score %}
     {% if score < 6 %}
         <p>You've rated this movie as a {{ score }}</p>
