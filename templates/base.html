@@ -7,10 +7,14 @@
 <body>
   Ratings
   <hr>
-
-  <a href="/login">Login</a>
-  <a href="/logout">Logout</a>
-  <a href="/register">Register</a>
+  <p>
+    {% if session.get("login") %}
+        <a href="/logout">Logout</a>
+    {% else %}
+      <a href="/login">Login</a>
+    {% endif %}
+      <a href="/register">Register</a>
+  </p>
 
   {% with messages = get_flashed_messages() %}
       {% for message in messages %}
