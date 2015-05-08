@@ -7,6 +7,8 @@ it loops over a user, which is slower to render -->
 
 <h3>{{ movie_title }}</h3>
 
+<p>The average rating for this movie is {{ average }}.</p>
+
 {% if score %}
     {% if score < 6 %}
         <p>You've rated this movie as a {{ score }}</p>

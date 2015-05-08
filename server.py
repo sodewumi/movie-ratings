@@ -58,6 +58,8 @@ def display_movie(id):
     movie_title = db.session.query(Movie.movie_title).filter_by(movie_id = id).one()
     movie_title = str(movie_title[0])
 
+    average = float(sum([r for r,y in user_rating])) / len(user_rating)
+
     logged_in_user = db.session.query(User).filter(User.email == session.get("login", 0)).first()
     
     if logged_in_user:
@@ -96,7 +98,8 @@ def display_movie(id):
 
     return render_template("movie_info.html", user_rating = user_rating, 
                             movie_title=movie_title, movie_id = id,
-                            score = score, prediction = prediction)
+                            score = score, prediction = prediction,
+                            average = average)
 
 
 
