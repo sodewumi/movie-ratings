@@ -34,16 +34,21 @@ class User(db.Model):
         this_user_rating_dict = {}
         paired_list = []
 
-        this_user_rating_obj = self.ratings
+        # this_user_rating_obj = self.ratings
 
-        for r in this_user_rating_obj:
-            this_user_rating_dict[r.movie_id] = r.score
+        user_ratings = db.session.query(self.ratings.movie_id, self.ratings.score)
+        other_ratings = db.session.query(other_rating.ratings.movie_id, other_rating.ratings.score)
+
+        # for r in this_user_rating_obj:
+        #     this_user_rating_dict[r.movie_id] = r.score
 
 
-        for r in other_rating.ratings:
-            movie_id = r.movie_id
-            if this_user_rating_dict.get(movie_id):
-                paired_list.append((r.score, this_user_rating_dict[movie_id]))
+        for m_id, score in user_ratings:
+            this_user_rating_dict[m_id] = score
+
+        for m_id, score in other_ratings:
+            if this_user_rating_dict.get(m_id):
+                paired_list.append((score, this_user_rating_dict[m_id]))
 
         if paired_list:
             return correlation.pearson(paired_list)
